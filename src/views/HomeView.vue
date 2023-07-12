@@ -3,7 +3,13 @@
     <div class="editor">
       <div class="line" v-for="(line, index) in lines" :key="index">
         <span class="line-number">{{ index + 1 }}</span>
-        <div class="line-content" contenteditable="true" @input="updateLine($event.target.innerText, index)" @keydown.enter.prevent="addLine(index)"></div>
+        <div class="line-content" 
+             contenteditable="true" 
+             @input="updateLine($event.target.innerText, index)" 
+             @keydown.enter.prevent="addLine(index)" 
+             @focus="selectedLine = index" 
+             @blur="selectedLine = null"
+             :class="{ 'line-selected': index === selectedLine }"></div>
       </div>
     </div>
     <button @click="submitCode">코드 제출</button>
@@ -16,7 +22,8 @@ export default {
   data() {
     return {
       lines: [''],
-      submittedCode: ''
+      submittedCode: '',
+      selectedLine: null
     };
   },
   methods: {
@@ -65,5 +72,9 @@ export default {
 
 .line-content:focus {
   outline: none;
+}
+
+.line-content.line-selected {
+  background-color: #444;
 }
 </style>
